@@ -4,32 +4,34 @@ class Session:
         self.app = app
 
     def login(self, login, password):
-        wd = self.app.wd
+        app = self.app
+        wd = app.wd
         # open authorize page
         wd.get(self.app.base_url)
         # input login
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(login)
+        app.common_action.type_in_input_field_with_name(name="username", input_value=login)
+        # submit inputed login
+        wd.find_element_by_xpath("//input[@value='Вход']").click()
         # input password
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
+        app.common_action.type_in_input_field_with_name(name="password", input_value=password)
         # submit
-        wd.find_element_by_xpath("//input[@value='Login']").click()
+        wd.find_element_by_xpath("//input[@value='Вход']").click()
 
     def logout(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("Logout").click()
-        wd.find_element_by_name("user")
+        # call dropdown menu
+        wd.find_element_by_xpath("//span[@class='user-info']").click()
+        # select logout
+        wd.find_element_by_link_text("Выход").click()
+        wd.find_element_by_name("username")
 
     def is_logged_in(self):
         wd = self.app.wd
-        return len(wd.find_elements_by_link_text("Logout")) > 0
+        return len(wd.find_elements_by_xpath("//div[@id='navbar']")) > 0
 
     def is_logged_as(self, user_name):
         wd = self.app.wd
-        return wd.find_element_by_xpath("//div/div[1]/form/b").text == f"({user_name})"
+        return wd.find_element_by_xpath("//span[@class='user-info']").text == f"({user_name})"
 
     def ensure_login(self, login, password):
         if self.is_logged_in():

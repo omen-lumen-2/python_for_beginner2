@@ -1,9 +1,8 @@
 from selenium import webdriver
 
 from fixture.common_action import CommonAction
-from fixture.contact import ContactHelper
-from fixture.group import GroupHelper
 from fixture.navigation import Navigation
+from fixture.project import ProjectHelper
 from fixture.session import Session
 
 
@@ -18,12 +17,12 @@ class Application:
         else:
             raise ValueError(f"Not support type of browser: {browser}. May be firefox, chrome, ie")
         self.base_url = base_url
-        self.wd.implicitly_wait(2)
+        self.wd.implicitly_wait(4)
         self.session = Session(self)
-        self.group = GroupHelper(self)
         self.navigation = Navigation(self)
-        self.contact = ContactHelper(self)
-        self.action = CommonAction(self)
+        self.common_action = CommonAction(self)
+        self.project_helper = ProjectHelper(self)
+
 
     def wd_quit(self):
         self.wd.quit()

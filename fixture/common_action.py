@@ -9,7 +9,7 @@ class CommonAction:
             wd.find_element_by_name(name).clear()
             wd.find_element_by_name(name).send_keys(input_value)
 
-    def select_option_on_value(self, name_select, group_id):
+    def select_option_on_text(self, name_select, text):
         wd = self.app.wd
-        if group_id is not None:
-            wd.find_element_by_xpath(f"//select[@name='{name_select}']/option[@value='{group_id}']").click()
+        if text is not None:
+            wd.find_element_by_xpath(f"//select[@name='{name_select}']/option[text()='{text}']").click()
